@@ -28,7 +28,7 @@ Yaripo is built using Java, which means it is **cross-platform** and runs on:
 ### Download the Latest Release
 You can download the game's executable JAR file from our releases page:
 
-👉 **[Download Yaripo Release](https://github.com/user/YaripoGame/releases/latest)**
+ **[Download Yaripo Release](https://github.com/dwego/Yaripo-Game/releases/latest)**
 
 ### Running the Game
 1. Ensure you have **Java 17** (or later) installed on your system.

@@ -4,7 +4,7 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.geom.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,22 +26,22 @@ public class Sprites {
 
     public Sprites() {
         for (String key : SPRITE_KEYS) {
-            String path = "sprites/" + key + ".png";
+            String path = "/sprites/" + key + ".png";
             // Map keys to actual file paths if they differ
             path = switch (key) {
-                case "aruana_idle" -> "sprites/aruana/idle_frente.png";
-                case "aruana_walk" -> "sprites/aruana/walk.png";
-                case "aruana_attack" -> "sprites/aruana/arco_ataque.png";
-                case "aruana_win" -> "sprites/aruana/comemorando.png";
-                case "aruana_portrait" -> "sprites/aruana/retrato.png";
-                case "iara_idle" -> "sprites/iara/idle_frente.png";
-                case "iara_swim" -> "sprites/iara/nado_lateral.png";
-                case "iara_jump" -> "sprites/iara/salto_cauda.png";
-                case "iara_shy" -> "sprites/iara/timida_coracao.png";
-                case "iara_victory" -> "sprites/iara/vitoria_regia_aceno.png";
-                case "iara_portrait_neutral" -> "sprites/iara/retrato_neutro.png";
-                case "iara_portrait_happy" -> "sprites/iara/retrato_feliz.png";
-                case "iara_portrait_sad" -> "sprites/iara/retrato_triste.png";
+                case "aruana_idle" -> "/sprites/aruana/idle_frente.png";
+                case "aruana_walk" -> "/sprites/aruana/walk.png";
+                case "aruana_attack" -> "/sprites/aruana/arco_ataque.png";
+                case "aruana_win" -> "/sprites/aruana/comemorando.png";
+                case "aruana_portrait" -> "/sprites/aruana/retrato.png";
+                case "iara_idle" -> "/sprites/iara/idle_frente.png";
+                case "iara_swim" -> "/sprites/iara/nado_lateral.png";
+                case "iara_jump" -> "/sprites/iara/salto_cauda.png";
+                case "iara_shy" -> "/sprites/iara/timida_coracao.png";
+                case "iara_victory" -> "/sprites/iara/vitoria_regia_aceno.png";
+                case "iara_portrait_neutral" -> "/sprites/iara/retrato_neutro.png";
+                case "iara_portrait_happy" -> "/sprites/iara/retrato_feliz.png";
+                case "iara_portrait_sad" -> "/sprites/iara/retrato_triste.png";
                 default -> path;
             };
             loadSprite(key, path);
@@ -49,10 +49,15 @@ public class Sprites {
     }
 
     public void loadSprite(String key, String path) {
-        try {
-            File f = new File(path);
-            if (f.exists()) cache.put(key, ImageIO.read(f));
-        } catch (Exception ignored) {}
+        try (InputStream is = getClass().getResourceAsStream(path)) {
+            if (is != null) {
+                cache.put(key, ImageIO.read(is));
+            } else {
+                System.err.println("[DEBUG_LOG] Sprite not found: " + path);
+            }
+        } catch (Exception e) {
+            System.err.println("[DEBUG_LOG] Error loading sprite " + path + ": " + e.getMessage());
+        }
     }
 
     private boolean has(String key) { return cache.containsKey(key); }

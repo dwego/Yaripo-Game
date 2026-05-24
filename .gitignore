@@ -1,2 +1,4 @@
 /.junie
 /.idea
+.DS_Store
+/target
